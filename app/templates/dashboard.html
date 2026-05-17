@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — KnowledgeBase AI{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Documents</h1>
+    <p class="page-sub">{{ docs|length }} file{% if docs|length != 1 %}s{% endif %} in your knowledge base</p>
+  </div>
+  <a href="{{ url_for('main.chat') }}" class="btn-primary">Ask AI →</a>
+</div>
+
+<div class="upload-zone" id="uploadZone">
+  <form method="POST" action="{{ url_for('main.upload') }}" enctype="multipart/form-data" id="uploadForm">
+    <input type="file" name="file" id="fileInput" accept=".pdf,.docx,.txt" hidden/>
+    <div class="upload-body" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-icon">↑</div>
+      <p class="upload-text">Drop a file here or <span class="upload-link">browse</span></p>
+      <p class="upload-hint">PDF · DOCX · TXT — up to 16 MB</p>
+    </div>
+    <div class="upload-progress" id="uploadProgress" style="display:none">
+      <div class="spinner"></div>
+      <span>Processing document…</span>
+    </div>
+  </form>
+</div>
+
+{% if docs %}
+<div class="doc-grid">
+  {% for doc in docs %}
+  <div class="doc-card">
+    <div class="doc-type {{ doc.file_type }}">{{ doc.file_type.upper() }}</div>
+    <div class="doc-info">
+      <h3 class="doc-name" title="{{ doc.original_name }}">{{ doc.original_name }}</h3>
+      <p class="doc-date">{{ doc.uploaded_at | string | truncate(10, False, '') }}</p>
+    </div>
+    <form method="POST" action="{{ url_for('main.delete_doc', doc_id=doc.id) }}"
+          onsubmit="return confirm('Delete this document?')">
+      <button type="submit" class="btn-delete" title="Delete">✕</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-icon">📂</div>
+  <h3>No documents yet</h3>
+  <p>Upload your first file to start asking questions.</p>
+</div>
+{% endif %}
+{% endblock %}

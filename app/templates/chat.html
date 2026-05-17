@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Ask AI — KnowledgeBase AI{% endblock %}
+{% block content %}
+<div class="chat-layout">
+  <div class="chat-main">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Ask AI</h1>
+        <p class="page-sub">Questions answered from your documents</p>
+      </div>
+      <a href="{{ url_for('main.dashboard') }}" class="btn-secondary">← Documents</a>
+    </div>
+
+    <div class="chat-window" id="chatWindow">
+      <div class="chat-welcome">
+        <div class="welcome-icon">⬡</div>
+        <h3>Ready to answer</h3>
+        <p>Ask anything about your uploaded documents.</p>
+      </div>
+    </div>
+
+    <div class="chat-input-bar">
+      <input type="text" id="questionInput" placeholder="Ask a question about your documents…" autocomplete="off"/>
+      <button id="askBtn" onclick="askQuestion()">
+        <span id="askBtnText">Ask</span>
+        <span id="askSpinner" class="spinner" style="display:none"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="chat-sidebar">
+    <h3 class="sidebar-title">Recent Questions</h3>
+    <div id="historyList">
+      {% for chat in history %}
+      <div class="history-item">
+        <p class="history-q">{{ chat.question }}</p>
+        <p class="history-a">{{ chat.answer[:120] }}{% if chat.answer|length > 120 %}…{% endif %}</p>
+        <p class="history-date">{{ chat.created_at | string | truncate(16, False, '') }}</p>
+      </div>
+      {% else %}
+      <p class="no-history">No questions yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

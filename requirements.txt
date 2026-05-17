@@ -1,0 +1,9 @@
+flask
+mysql-connector-python
+openai
+faiss-cpu
+PyPDF2
+python-docx
+bcrypt
+python-dotenv
+numpy
