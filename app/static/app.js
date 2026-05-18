@@ -36,7 +36,7 @@ const askBtn = document.getElementById("askBtn");
 const askBtnText = document.getElementById("askBtnText");
 const askSpinner = document.getElementById("askSpinner");
 
-function appendBubble(role, text, sources) {
+function appendBubble(role, text, sources, isHtml = false) {
   const welcome = chatWindow.querySelector(".chat-welcome");
   if (welcome) welcome.remove();
 
@@ -45,7 +45,11 @@ function appendBubble(role, text, sources) {
 
   const content = document.createElement("div");
   content.className = "bubble-content";
-  content.textContent = text;
+  if (isHtml) {
+    content.innerHTML = text;
+  } else {
+    content.textContent = text;
+  }
   wrap.appendChild(content);
 
   if (sources && sources.length > 0) {
@@ -80,12 +84,12 @@ async function askQuestion() {
     });
     const data = await res.json();
     if (data.error) {
-      appendBubble("ai", "Error: " + data.error);
+      appendBubble("ai", "Error: " + data.error, null, false);
     } else {
-      appendBubble("ai", data.answer, data.sources);
+      appendBubble("ai", data.answer_html || data.answer, data.sources, true);
     }
   } catch {
-    appendBubble("ai", "Network error. Please try again.");
+    appendBubble("ai", "Network error. Please try again.", null, false);
   } finally {
     askBtn.disabled = false;
     askBtnText.style.display = "inline";

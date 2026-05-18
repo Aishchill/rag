@@ -200,6 +200,58 @@ a:hover { color: var(--accent); }
 }
 .user .bubble-content { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
 .ai .bubble-content { background: var(--surface2); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+
+/* ── Markdown AI Bubble Styling ───────────────────────────────── */
+.bubble-content p { margin-bottom: 0.75rem; }
+.bubble-content p:last-child { margin-bottom: 0; }
+.bubble-content ul, .bubble-content ol { margin: 0.5rem 0 0.75rem 1.5rem; }
+.bubble-content li { margin-bottom: 0.25rem; }
+.bubble-content h1, .bubble-content h2, .bubble-content h3, .bubble-content h4 {
+  font-family: var(--font-head);
+  margin: 1rem 0 0.5rem 0;
+  color: var(--text);
+  font-weight: 700;
+}
+.bubble-content h1:first-child, .bubble-content h2:first-child, .bubble-content h3:first-child, .bubble-content h4:first-child {
+  margin-top: 0;
+}
+.bubble-content code {
+  background: var(--surface);
+  padding: 0.15rem 0.35rem;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: var(--accent2);
+}
+.bubble-content pre {
+  background: var(--surface);
+  padding: 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+.bubble-content pre code {
+  background: transparent;
+  padding: 0;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+.bubble-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+}
+.bubble-content th, .bubble-content td {
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+  text-align: left;
+}
+.bubble-content th {
+  background: var(--surface);
+  font-weight: 600;
+}
+
 .bubble-sources { margin-top: .4rem; font-size: .75rem; color: var(--text-muted); }
 .source-tag {
   display: inline-block; background: var(--surface2); border: 1px solid var(--border);

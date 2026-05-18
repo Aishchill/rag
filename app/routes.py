@@ -1,5 +1,6 @@
 import os
 import json
+import markdown
 from flask import (
     Blueprint, render_template, request, redirect,
     url_for, flash, session, jsonify, current_app,
@@ -169,13 +170,15 @@ def ask():
         if not chunks:
             return jsonify({
                 "answer": "No relevant documents found. Please upload some documents first.",
+                "answer_html": "<p>No relevant documents found. Please upload some documents first.</p>",
                 "sources": [],
             })
 
         answer = generate_answer(question, chunks)
+        answer_html = markdown.markdown(answer, extensions=['fenced_code', 'tables', 'nl2br', 'sane_lists'])
         sources = list({c["original_name"] for c in chunks})
         save_chat(uid, question, answer, json.dumps(sources))
-        return jsonify({"answer": answer, "sources": sources})
+        return jsonify({"answer": answer, "answer_html": answer_html, "sources": sources})
 
     except RuntimeError as e:
         return jsonify({"error": str(e)}), 503
@@ -192,4 +195,5 @@ def history():
     for c in chats:
         c["sources"] = json.loads(c["sources"] or "[]")
         c["created_at"] = str(c["created_at"])
+        c["answer_html"] = markdown.markdown(c["answer"], extensions=['fenced_code', 'tables', 'nl2br', 'sane_lists'])
     return jsonify(chats)
